@@ -1,5 +1,7 @@
 class BirdsController < ApplicationController
 
+  wrap_parameters format: []
+
   # GET /birds
   def index
     birds = Bird.all
@@ -16,6 +18,16 @@ class BirdsController < ApplicationController
   def show
     bird = Bird.find_by(id: params[:id])
     if bird
+      render json: bird
+    else
+      render json: { error: "Bird not found" }, status: :not_found
+    end
+  end
+
+  def update
+    bird = Bird.find_by(id: params[:id])
+    if bird
+      bird.update(bird_params)
       render json: bird
     else
       render json: { error: "Bird not found" }, status: :not_found
